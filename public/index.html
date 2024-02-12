@@ -46,19 +46,19 @@
 	<script src="data/street_0.js"></script>
 
 	<script>
-		const map = L.map('map', {
-			zoomControl: true, maxZoom: 28, minZoom: 1
-		}).fitBounds([[34.4264596291723, 5.048961433001758], [34.44650761992561, 5.086404979127573]]);
 
-		const tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+		const baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 			maxZoom: 28,
 			attribution: '&copy; <a href="http://www.apcouleddjellal.dz">APC OULED DJELLAL</a>'
-		}).addTo(map);
+		});
 
-		var bounds_group = new L.featureGroup([]);
-
-		function style_street_0_0() {
-			return {
+		var layer_street_0 = new L.geoJson(json_street_0, {
+			attribution: '',
+			interactive: true,
+			dataVar: 'json_street_0',
+			layerName: 'layer_street_0',
+			pane: 'pane_street_0',
+			style: {
 				pane: 'pane_street_0',
 				opacity: 1,
 				color: 'rgba(251,154,153,1.0)',
@@ -68,23 +68,22 @@
 				weight: 2.0,
 				fillOpacity: 0,
 				interactive: true,
-			}
-		}
+			},
+		});
+
+		const map = L.map('map', {
+			zoomControl: true,
+			maxZoom: 28,
+			minZoom: 1,
+			layers: [baseLayer],
+		}).fitBounds([[34.4264596291723, 5.048961433001758], [34.44650761992561, 5.086404979127573]]);
+
 		map.createPane('pane_street_0');
 		map.getPane('pane_street_0').style.zIndex = 400;
 		map.getPane('pane_street_0').style['mix-blend-mode'] = 'normal';
-		var layer_street_0 = new L.geoJson(json_street_0, {
-			attribution: '',
-			interactive: true,
-			dataVar: 'json_street_0',
-			layerName: 'layer_street_0',
-			pane: 'pane_street_0',
-			style: style_street_0_0,
-		});
-		bounds_group.addLayer(layer_street_0);
-		map.addLayer(layer_street_0);
+		//bounds_group.addLayer(layer_street_0);
 
-
+		L.control.layers({ "صور القمر الصناعي": baseLayer }, { "الشوارع": layer_street_0 }).addTo(map);
 
 		function onLocationFound(e) {
 			const radius = e.accuracy / 2;
