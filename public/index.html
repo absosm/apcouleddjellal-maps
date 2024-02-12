@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>بلدية أولاد جلال | نظام المعلومات الجغرافي</title>
+	
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <link rel="stylesheet" href="css/leaflet.css"/>
+    <script src="js/leaflet.js"></script>
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+    body { 
+      padding: 0; 
+      margin: 0; 
+    } 
+    #map { 
+      height: 100%; 
+      width: 100vw; 
+    }
+	</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+	const map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[34.4264596291723,5.048961433001758],[34.44650761992561,5.086404979127573]]);
+
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 28,
+		attribution: '&copy; <a href="http://www.apcouleddjellal.dz">APC OULED DJELLAL</a>'
+	}).addTo(map);
+
+	function onLocationFound(e) {
+		const radius = e.accuracy / 2;
+
+		const locationMarker = L.marker(e.latlng).addTo(map)
+			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
+
+		const locationCircle = L.circle(e.latlng, radius).addTo(map);
+	}
+
+	function onLocationError(e) {
+		//alert(e.message);
+	}
+
+	map.on('locationfound', onLocationFound);
+	map.on('locationerror', onLocationError);
+
+	//map.locate({setView: true, maxZoom: 16});
+</script>
+
+
+
+</body>
+</html>
