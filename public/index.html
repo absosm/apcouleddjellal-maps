@@ -12,7 +12,8 @@
 
 	<link rel="stylesheet" href="css/leaflet.css?v=0.0.1" />
 	<script src="js/leaflet.js?v0.0.1"></script>
-
+	<script src="js/ctxtextpath.js"></script>
+	<script src="js/leaflet.streetlabels.js"></script>
 	<style>
 		html,
 		body {
@@ -43,65 +44,50 @@
 
 	<div id='map'></div>
 
-	<script src="data/street_0.js"></script>
+	<script src="data/street.js?v=2"></script>
 
 	<script>
+
+		var streetLabelsRenderer = new L.StreetLabels({
+			collisionFlg: true,
+			propertyName: 'name',
+			showLabelIf: function (layer) {
+				return true; //layer.properties.type == "primary";
+			},
+			fontStyle: {
+				dynamicFontSize: false,
+				fontSize: 10,
+				fontSizeUnit: "px",
+				lineWidth: 2.0,
+				fillStyle: "black",
+				strokeStyle: "white",
+			},
+		});
+
+		var layer_street_0 = L.geoJSON(json_street, {
+			onEachFeature: onEachFeature
+		});
+
+
+		function onEachFeature(feature, layer) {
+			//Do something with the features here (bind popups, etc)
+		}
 
 		const baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 			maxZoom: 28,
 			attribution: '&copy; <a href="http://www.apcouleddjellal.dz">APC OULED DJELLAL</a>'
 		});
-
-		var layer_street_0 = new L.geoJson(json_street_0, {
-			attribution: '',
-			interactive: true,
-			dataVar: 'json_street_0',
-			layerName: 'layer_street_0',
-			pane: 'pane_street_0',
-			style: {
-				pane: 'pane_street_0',
-				opacity: 1,
-				color: 'rgba(251,154,153,1.0)',
-				dashArray: '',
-				lineCap: 'square',
-				lineJoin: 'bevel',
-				weight: 2.0,
-				fillOpacity: 0,
-				interactive: true,
-			},
-		});
-
-		const map = L.map('map', {
+		var map = L.map('map', {
+			renderer: streetLabelsRenderer, //Custom Canvas Renderer
+			layers: [baseLayer, layer_street_0],
 			zoomControl: true,
 			maxZoom: 28,
 			minZoom: 1,
-			layers: [baseLayer],
 		}).fitBounds([[34.4264596291723, 5.048961433001758], [34.44650761992561, 5.086404979127573]]);
 
-		map.createPane('pane_street_0');
-		map.getPane('pane_street_0').style.zIndex = 400;
-		map.getPane('pane_street_0').style['mix-blend-mode'] = 'normal';
-		//bounds_group.addLayer(layer_street_0);
+		L.control.layers({ "القمر الصناعي": baseLayer }, { "شبكة الشوارع": layer_street_0 }).addTo(map);
 
-		L.control.layers({ "صور القمر الصناعي": baseLayer }, { "الشوارع": layer_street_0 }).addTo(map);
 
-		function onLocationFound(e) {
-			const radius = e.accuracy / 2;
-
-			const locationMarker = L.marker(e.latlng).addTo(map)
-				.bindPopup(`You are within ${radius} meters from this point`).openPopup();
-
-			const locationCircle = L.circle(e.latlng, radius).addTo(map);
-		}
-
-		function onLocationError(e) {
-			//alert(e.message);
-		}
-
-		map.on('locationfound', onLocationFound);
-		map.on('locationerror', onLocationError);
-
-		//map.locate({setView: true, maxZoom: 16});
 	</script>
 
 
