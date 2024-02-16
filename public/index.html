@@ -44,17 +44,28 @@
 			height: 100%;
 			width: 100vw;
 		}
+		.sniper {
+			position: fixed;
+			top: 50%;left: 50%;
+			color: #ff1e00 !important;
+			font-size: 24px;
+			transform: translate(-50%, -50%);
+			z-index: 5000;
+		}
 	</style>
 </head>
 
 <body>
 
+	<i class="sniper fas fa-crosshairs"></i>
+
 	<div id="map">
+		
 	</div>
 
 	<script src="js/leaflet-control-geocoder.Geocoder.js"></script>
 	<script src="js/leaflet.streetlabels.js?v=0.0.1"></script>
-	<script src="js/leaflet-measure.js"></script>
+	<script src="js/leaflet-measure.js?v=0.0.1"></script>
 	<script src="js/leaflet-hash.js"></script>
 
 	<script src="data/street.js?v=0.0.1"></script>
@@ -119,4 +130,5 @@
 			.className += ' fas fa-ruler';
 	</script>
 </body>
+
 </html>

@@ -6720,7 +6720,7 @@ module.exports = {
   'lastPoint': 'النقطة الأخيرة',
   'area': 'مساحة',
   'perimeter': 'محيط',
-  'pointLocation': 'وضع النقطة',
+  'pointLocation': 'إحداثيات نقطة',
   'areaMeasurement': 'قياس المساحة',
   'linearMeasurement': 'القياس الخطي',
   'pathDistance': 'مسافة المسار',
