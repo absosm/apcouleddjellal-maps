@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<title>بلدية أولاد جلال | نظام المعلومات الجغرافي</title>
+
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+	<link rel="stylesheet" href="css/leaflet.css?v=0.0.1" />
+	<link rel="stylesheet" href="css/fontawesome-all.min.css">
+	<link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+	<link rel="stylesheet" href="css/leaflet-measure.css">
+	<link rel="stylesheet" href="css/style.css?v=0.0.1">
+
+	<script src="js/leaflet.js?v=0.0.1"></script>
+	<script src="js/ctxtextpath.js?v=0.0.1"></script>
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+		}
+
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+
+		body {
+			padding: 0;
+			margin: 0;
+		}
+
+		#map {
+			height: 100%;
+			width: 100vw;
+		}
+		.sniper {
+			position: fixed;
+			top: 50%;left: 50%;
+			color: #ff1e00 !important;
+			font-size: 24px;
+			transform: translate(-50%, -50%);
+			z-index: 5000;
+		}
+	</style>
+</head>
+
+<body>
+
+	<i class="sniper fas fa-crosshairs"></i>
+
+	<div id="map">
+		
+	</div>
+
+	<script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+	<script src="js/leaflet.streetlabels.js?v=0.0.1"></script>
+	<script src="js/leaflet-measure.js?v=0.0.1"></script>
+	<script src="js/leaflet-hash.js"></script>
+
+	<script src="data/street.js?v=0.0.1"></script>
+
+	<script>
+
+		var streetLabelsRenderer = new L.StreetLabels({
+			collisionFlg: true,
+			propertyName: 'name',
+			showLabelIf: function (layer) {
+				return true; //layer.properties.type == "primary";
+			},
+			fontStyle: {
+				dynamicFontSize: false,
+				fontSize: 12,
+				fontSizeUnit: "px",
+				lineWidth: 2.0,
+				fillStyle: "black",
+				strokeStyle: "white",
+			},
+		});
+
+		var layer_street_0 = L.geoJSON(json_street, {
+			renderer: streetLabelsRenderer, //Custom Canvas Renderer
+			style: {
+				opacity: .5,
+				color: 'rgba(198, 208, 219,1.0)',
+				dashArray: '',
+				lineCap: 'square',
+				lineJoin: 'bevel',
+				weight: 3,
+				fillOpacity: 0,
+				interactive: true,
+			}
+		});
+
+		const baseLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+			maxZoom: 18,
+			attribution: '&copy; <a href="http://www.apcouleddjellal.dz">APC OULED DJELLAL</a>'
+		});
+		var map = L.map('map', {
+			layers: [baseLayer, layer_street_0],
+			zoomControl: true,
+			maxZoom: 18,
+			minZoom: 10,
+		}).fitBounds([[34.4264596291723, 5.048961433001758], [34.44650761992561, 5.086404979127573]]);
+		var hash = new L.Hash(map);
+		L.control.layers({ "القمر الصناعي": baseLayer }, { "شبكة الشوارع": layer_street_0 }).addTo(map);
+
+		var measureControl = new L.Control.Measure({
+			position: 'topleft',
+			primaryLengthUnit: 'meters',
+			secondaryLengthUnit: 'kilometers',
+			primaryAreaUnit: 'sqmeters',
+			secondaryAreaUnit: 'hectares',
+			localization: 'ar'
+		});
+		measureControl.addTo(map);
+		document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+			.innerHTML = '';
+		document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+			.className += ' fas fa-ruler';
+	</script>
+</body>
+
+</html>
