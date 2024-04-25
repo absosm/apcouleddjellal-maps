@@ -173,15 +173,15 @@
 
 		// L.control.layers(
 		// 	{ "القمر الصناعي": baseLayer }, 
-		// 	{ "شبكة الشوارع": layer_street_0 }, 
-		// 	{ "الفضاءات العمومية": layer_publics_0 }
+		// 	{ ": layer_street_0 }, 
+		// 	{ ": layer_publics_0 }
 		// ).addTo(map);
 
 
 		var overlaysTree = [
 			{ label:"القمر الصناعي", layer:baseLayer },
-			{ label: '<img src="legend/publics_1.png" /> publics', layer: layer_publics_0 },
-			{ label: '<img src="legend/street_0.png" /> street', layer: layer_street_0 },]
+			{ label: '<img src="legend/publics_1.png" /> الفضاءات العمومية', layer: layer_publics_0 },
+			{ label: '<img src="legend/street_0.png" /> شبكة الشوارع"', layer: layer_street_0 },]
 
 		var lay = L.control.layers.tree(null, overlaysTree, {
 			//namedToggle: true,
